@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIRTHDAY COUNTDOWN</title>
+</head>
+
+<body>
+   <h1> Enter your birthday: </h1>
+    <br>
+    <br>
+
+    <input type="text" id="myDate" placeholder="Enter Your Birth Date">DD/MM/YYYY
+    <br>
+    <br>
+    <input type="button" id="startButton" value="Upcoming Birthday After">
+    <br>
+    <br>
+    <div id="countdown"></div>
+
+
+
+    <script>
+        var timeCounter;
+
+        function remainingTime(birthDay) {
+            
+            function stopTimer() {
+                if (timeCounter) {
+                    clearInterval(timeCounter);
+                    end = timeCounter = null;
+                }
+            }
+
+
+            var second = 1000;
+            var minute = second * 60;
+            var hour = minute * 60;
+            var day = hour * 24;
+            var month = day * 30;
+
+
+            if (birthDay || !timeCounter) {
+                stopTimer();
+                timeCounter = setInterval(remainingTime, 1000);
+            }
+
+
+            var still = new Date();
+
+
+            if (!end) end = parseDateDMY(document.getElementById("myDate").value);
+            var distance = end - still;
+
+
+            if (distance < 0) {
+                stopTimer();
+                document.getElementById('countdown').innerHTML = 'EXPIRED!';
+
+            } else {
+                var months = Math.floor(distance / month);
+                var days = Math.floor((distance % month) / day);
+                var hours = Math.floor((distance % day) / hour);
+                var minutes = Math.floor((distance % hour) / minute);
+                var seconds = Math.floor((distance % minute) / second);
+
+
+                document.getElementById('countdown').innerHTML = months + 'months ' +
+                    days + 'days ' +
+                    hours + 'hrs ' +
+                    minutes + 'mins ' +
+                    seconds + 'secs';
+            }
+        }
+
+        
+        function parseDateDMY(s) {
+            var b = s.split(/\D/);
+            var d = new Date(b[2], --b[1], b[0]);
+            return d && d.getMonth() == b[1] ? d : new Date(NaN);
+        }
+
+        
+        window.onload = function () {
+            document.getElementById('startButton').addEventListener('click', remainingTime, false);
+        }
+
+
+
+    </script>
+</body>
+
+</html>
+
